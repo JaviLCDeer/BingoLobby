@@ -11,32 +11,32 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 public class ModDimensions {
+   public static final ResourceKey<Level> LOBBY_DIMENSION;
 
-    public static final ResourceKey<Level> LOBBY_DIMENSION = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(BingoLobby.getInstance().modid, "lobby"));
+   public static void init() {
+      BingoLobby.getInstance().register(Registries.f_256783_, "lobby_generator", BingoLobbyGenerator.CODEC);
+   }
 
-    public static void init() {
-        BingoLobby.getInstance().register(Registries.CHUNK_GENERATOR, "lobby_generator", BingoLobbyGenerator.CODEC);
-    }
-    
-    public static void teleportToLobby(ServerPlayer player, boolean yp) {
-        player.getInventory().clearContent();
-        if (player.level().dimension().equals(ModDimensions.LOBBY_DIMENSION)) {
-            player.teleportTo(0.5, 65, 0.5);
-            player.moveTo(0.5, 65, 0.5, 0, 0);
-        } else {
-            ServerLevel destination = player.serverLevel().getServer().getLevel(ModDimensions.LOBBY_DIMENSION);
-            if (destination == null) {
-                player.connection.disconnect(Component.literal("BingoLobby failed to load. Please restart server."));
-            } else {
-                float yRot = yp ? 0 : player.getYRot();
-                float xRot = yp ? 0 : player.getXRot();
-                player.teleportTo(
-                        destination,
-                        0.5, 65, 0.5,
-                        yRot, xRot
-                );
-            }
-        }
-        player.setRespawnPosition(ModDimensions.LOBBY_DIMENSION, new BlockPos(0, 65, 0), 0, true, false);
-    }
+   public static void teleportToLobby(ServerPlayer player, boolean yp) {
+      player.m_150109_().m_6211_();
+      if (player.m_9236_().m_46472_().equals(LOBBY_DIMENSION)) {
+         player.m_6021_(582.5D, 117.0D, 1315.5D);
+         player.m_7678_(582.5D, 117.0D, 1315.5D, 0.0F, 0.0F);
+      } else {
+         ServerLevel destination = player.m_284548_().m_7654_().m_129880_(LOBBY_DIMENSION);
+         if (destination == null) {
+            player.f_8906_.m_9942_(Component.m_237113_("BingoLobby failed to load. Please restart server."));
+         } else {
+            float yRot = yp ? 0.0F : player.m_146908_();
+            float xRot = yp ? 0.0F : player.m_146909_();
+            player.m_8999_(destination, 582.5D, 117.0D, 1315.5D, yRot, xRot);
+         }
+      }
+
+      player.m_9158_(LOBBY_DIMENSION, new BlockPos(582, 117, 1315), 0.0F, true, false);
+   }
+
+   static {
+      LOBBY_DIMENSION = ResourceKey.m_135785_(Registries.f_256858_, new ResourceLocation(BingoLobby.getInstance().modid, "lobby"));
+   }
 }
